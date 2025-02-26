@@ -1,0 +1,6 @@
+confluent-kafka==2.5.3
+avro-python3==1.10.2
+fastavro==1.9.7
+azure-identity==1.17.1
+azure-keyvault-secrets==4.8.0
+faker==30.0.0

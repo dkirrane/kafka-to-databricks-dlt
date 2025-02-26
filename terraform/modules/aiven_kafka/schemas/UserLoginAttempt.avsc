@@ -1,0 +1,14 @@
+{
+    "type": "record",
+    "name": "UserLoginAttempt",
+    "fields": [
+        {"name": "user_id", "type": "string"},
+        {"name": "ip_address", "type": "string"},
+        {"name": "success", "type": "boolean"},
+        {
+            "name"       : "attempt_time"    ,
+            "type"       : "long"            ,
+            "logicalType": "timestamp-millis"
+        }
+    ]
+}

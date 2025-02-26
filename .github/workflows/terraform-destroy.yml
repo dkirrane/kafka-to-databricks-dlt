@@ -1,0 +1,25 @@
+name: Terraform Destroy
+
+on:
+  # Schedule Terraform Destroy @ 1am UTC every day
+  schedule:
+    - cron: "0 1 * * *"
+
+  workflow_dispatch:
+
+run-name: Terraform Destroy for ${{ vars.WORKSPACE }} workspace by @${{ github.actor }}
+
+jobs:
+  Destroy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ vars.WORKSPACE }}
+      cancel-in-progress: true
+    steps:
+      - name: Terraform Destroy
+        uses: dkirrane/terraform-actions/destroy@main
+        with:
+          organization: dkirrane
+          workspace: ${{ vars.WORKSPACE }}
+          directory: ./terraform
+          secrets: ${{ toJSON(secrets) }}

@@ -1,0 +1,26 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+
+run-name: Terraform Apply for ${{ vars.WORKSPACE }} workspace by @${{ github.actor }}
+
+jobs:
+  Apply:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ vars.WORKSPACE }}
+      cancel-in-progress: false
+    steps:
+      - name: Terraform Apply
+        uses: dkirrane/terraform-actions/apply@main
+        with:
+          organization: dkirrane
+          workspace: ${{ vars.WORKSPACE }}
+          directory: ./terraform
+          secrets: ${{ toJSON(secrets) }}

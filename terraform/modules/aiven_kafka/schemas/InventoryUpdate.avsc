@@ -1,0 +1,27 @@
+{
+    "type":"record",
+    "name":"InventoryUpdate",
+    "fields":[
+        {
+            "name":"product_id",
+            "type":"string"
+        },
+        {
+            "name":"quantity",
+            "type":"int"
+        },
+        {
+            "name":"warehouse_id",
+            "type":"string"
+        },
+        {
+            "name":"update_type",
+            "type":"string"
+        },
+        {
+            "name":"updated_at",
+            "type":"long",
+            "logicalType":"timestamp-millis"
+        }
+    ]
+}

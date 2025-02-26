@@ -1,0 +1,17 @@
+# The main pipeline for kafka_dr_dlt
+resources:
+  pipelines:
+
+    kafka_dr_dlt_pipeline:
+      name: kafka_dr_dlt_pipeline
+      target: kafka_dr_dlt_${bundle.environment}
+
+      libraries:
+        - notebook:
+            path: ../src/kafka_stream.py
+            path: ../src/dlt_pipeline.ipynb
+    #   libraries:
+    #     - file: ../src/kafka_stream.py
+
+      configuration:
+        bundle.sourcePath: /Workspace/${workspace.file_path}/src

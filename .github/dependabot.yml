@@ -1,0 +1,32 @@
+version: 2
+
+registries:
+  terraform-cloud:
+    type: terraform-registry
+    url: https://app.terraform.io/dkirrane
+    token: ${{secrets.TFC_ACCESS_TOKEN}}
+
+updates:
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
+    schedule:
+      interval: "daily"
+    registries:
+      - terraform-cloud
+    reviewers:
+      - "dkirrane"
+    groups:
+      terraform-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "dkirrane"
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - "*"

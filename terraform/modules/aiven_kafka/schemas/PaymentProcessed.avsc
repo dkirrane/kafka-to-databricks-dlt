@@ -1,0 +1,15 @@
+{
+    "type": "record",
+    "name": "PaymentProcessed",
+    "fields": [
+        {"name": "payment_id", "type": "string"},
+        {"name": "order_id", "type": "string"},
+        {"name": "amount", "type": "double"},
+        {"name": "status", "type": "string"},
+        {
+            "name"       : "processed_at"    ,
+            "type"       : "long"            ,
+            "logicalType": "timestamp-millis"
+        }
+    ]
+}

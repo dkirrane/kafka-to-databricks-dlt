@@ -1,0 +1,5 @@
+bundle:
+  name: kafka_topic_dr
+
+include:
+  - resources/*.yml

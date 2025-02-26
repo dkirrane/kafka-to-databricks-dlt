@@ -1,0 +1,26 @@
+name: Terraform Plan
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+
+run-name: Terraform Plan for ${{ vars.WORKSPACE }} workspace by @${{ github.actor }}
+
+jobs:
+  Plan:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: plan-${{ vars.WORKSPACE }}
+      cancel-in-progress: true
+    steps:
+      - name: Terraform Plan
+        uses: dkirrane/terraform-actions/plan@main
+        with:
+          organization: dkirrane
+          workspace: ${{ vars.WORKSPACE }}
+          directory: ./terraform
+          secrets: ${{ toJSON(secrets) }}

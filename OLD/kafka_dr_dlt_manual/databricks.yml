@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=bundle_config_schema.json
+bundle:
+  name: kafka_dr_dlt_manual
+
+resources:
+  pipelines:
+    kafka_dr_dlt_manual:
+      name: kafka_dr_dlt_manual
+      development: true
+      continuous: false
+      channel: "CURRENT"
+      photon: false
+      libraries:
+        - notebook:
+            path: ./kafka_stream.py
+      edition: "ADVANCED"
+      clusters:
+        - label: "default"
+          num_workers: 1
+
+targets:
+  dev:
+    workspace:
+      host: https://adb-2578816957679755.15.azuredatabricks.net

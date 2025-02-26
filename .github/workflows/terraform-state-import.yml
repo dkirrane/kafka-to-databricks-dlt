@@ -1,0 +1,74 @@
+name: Terraform State Import
+
+on:
+  workflow_dispatch:
+    inputs:
+      resource:
+        description: "Enter the Terraform resource to import"
+        required: true
+        type: string
+        default: 'module.aiven_kafka[0].aiven_kafka_topic.this["user_actions"]'
+      resource_id:
+        description: "Enter the Terraform resource ID"
+        required: true
+        type: string
+        default: "dkirrane-ccaas-test/databricks-kafka-dr-poc-kafka/user-actions"
+      environment:
+        description: Azure Subscription containing the Databricks workspace
+        type: environment
+        required: true
+        default: "ccaas-dev-dev_labs"
+
+run-name: terraform state import ${{ inputs.resource }} ${{ inputs.resource_id }} by @${{ github.actor }}
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./terraform
+
+jobs:
+  StateImport:
+    name: "terraform state import"
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+          cli_config_credentials_token: ${{ secrets.TFC_ACCESS_TOKEN }}
+          terraform_wrapper: false
+
+      - name: terraform init
+        run: |
+          terraform init
+          echo ""
+          echo "Workspace"
+          terraform workspace show
+          echo ""
+          echo "State List"
+          terraform state list
+        shell: bash
+        env:
+          TF_LOG: ERROR
+          # TF_WORKSPACE not needed - set in terraform/versions.tf
+
+      - name: terraform state import
+        run: |
+          terraform import '${{ inputs.resource }}' '${{ inputs.resource_id }}'
+        shell: bash
+        env:
+          TF_LOG: ERROR
+          # TF_WORKSPACE not needed - set in terraform/versions.tf
+
+          AIVEN_TOKEN: ${{ secrets.AIVEN_TOKEN }}
+          # AIVEN_PROJECT: "dkirrane-ccaas-test"
+
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}

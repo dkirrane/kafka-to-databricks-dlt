@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=bundle_config_schema.json
+bundle:
+  name: kafka_dr_dab
+  databricks_cli_version: 0.228.0
+
+# workspace:
+#   root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/my-envs/${bundle.target}
+
+# These are for any custom variables for use throughout the bundle.
+variables:
+  kafka_topics:
+    description: Kafka topics to consumed by the DLT pipeline
+    default: user-actions
+
+include:
+  - resources/*.yml
+
+# artifacts:
+#   default:
+#     type: whl
+#     build: poetry build
+#     path: .

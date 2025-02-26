@@ -1,0 +1,1 @@
+https://docs.databricks.com/en/delta-live-tables/tutorial-bundles.html#create-the-bundle-manually

@@ -1,0 +1,50 @@
+name: "Kafka Consumer"
+
+on:
+  workflow_dispatch:
+    inputs:
+      timeout:
+        description: "Timeout in minutes for the Data generator run"
+        required: true
+        default: 60
+        type: number
+
+run-name: Running Kafka Consumer for ${{ inputs.timeout }} mins - @${{ github.actor }}
+
+concurrency: "consumer"
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./aiven_kafka
+
+jobs:
+
+  Consumer:
+    runs-on: ubuntu-latest
+
+    environment: ccaas-dev-dev_labs
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: Azure/login@v2
+      with:
+        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run Kafka Consumer
+      run: |
+        python -u kafka_consumer_avro.py
+      timeout-minutes: ${{ fromJSON(inputs.timeout) }}

@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "dlt_kafka_topics"
+version = "0.1.0"
+description = "Disaster Recovery pipeline for Kafka Topics"
+authors = ["dkirrane <1280116+dkirrane@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "dlt_kafka_topics"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+confluent-kafka = "^2.5.3"
+# databricks-connect = "^15.4.2"
+# pyspark = "^3.5.3"
+# delta-spark = "^3.2.0"
+
+# [tool.poetry.dev-dependencies]
+# databricks-cli = "^0.17.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+main = "dlt_kafka_topics.dlt_pipeline:main"

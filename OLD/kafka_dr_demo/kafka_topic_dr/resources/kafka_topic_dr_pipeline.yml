@@ -1,0 +1,12 @@
+# The main pipeline for kafka_topic_dr
+resources:
+  pipelines:
+    kafka_topic_dr_pipeline:
+      name: kafka_topic_dr_pipeline
+      target: kafka_topic_dr_${bundle.environment}
+      libraries:
+        - notebook:
+            path: ../src/dlt_pipeline.ipynb
+
+      configuration:
+        bundle.sourcePath: /Workspace/${workspace.file_path}/src

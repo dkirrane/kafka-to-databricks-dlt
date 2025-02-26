@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "file:///mnt/c/dev/GitHub/kafka_topic_dr/kafka_dr_pipeline_dab/bundle_config_schema.json": "*databricks.yml",
+        "https://json.schemastore.org/databricks-asset-bundles.json": "file:///mnt/c/dev/GitHub/kafka_topic_dr/kafka_topic_dr_pipeline/resources/kafka_topic_dr_pipeline.yml"
+    }
+}

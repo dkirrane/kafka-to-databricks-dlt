@@ -1,0 +1,14 @@
+{
+    "type": "record",
+    "name": "OrderPlaced",
+    "fields": [
+        {"name": "order_id", "type": "string"},
+        {"name": "user_id", "type": "string"},
+        {"name": "total_amount", "type": "double"},
+        {
+            "name"       : "order_date"      ,
+            "type"       : "long"            ,
+            "logicalType": "timestamp-millis"
+        }
+    ]
+}

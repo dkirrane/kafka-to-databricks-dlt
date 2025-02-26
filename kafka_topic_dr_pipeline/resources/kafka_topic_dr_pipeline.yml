@@ -1,0 +1,18 @@
+resources:
+  pipelines:
+    kafka_topic_dr_pipeline:
+      name: kafka_topic_dr_pipeline
+      clusters:
+        - node_type_id: Standard_D4ads_v5
+          autoscale:
+            mode: ENHANCED
+            max_workers: 1
+            min_workers: 1
+          label: default
+      libraries:
+        - notebook:
+            path: ../src/kafka_topic_dr_pipeline.py
+      development: true
+      channel: CURRENT
+      continuous: true
+      target: kafka_topic_dr_pipeline

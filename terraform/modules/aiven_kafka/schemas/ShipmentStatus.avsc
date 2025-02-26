@@ -1,0 +1,14 @@
+{
+    "type": "record",
+    "name": "ShipmentStatus",
+    "fields": [
+        {"name": "shipment_id", "type": "string"},
+        {"name": "order_id", "type": "string"},
+        {"name": "status", "type": "string"},
+        {
+            "name"       : "updated_at"      ,
+            "type"       : "long"            ,
+            "logicalType": "timestamp-millis"
+        }
+    ]
+}

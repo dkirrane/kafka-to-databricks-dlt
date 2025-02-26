@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "kafka_topic_dr"
+version = "0.0.1"
+description = "wheel file based on kafka_topic_dr/src"
+authors = ["dkirrane <1280116+dkirrane@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+databricks-connect = "^15.4.2"
+pyspark = "^3.5.3"
+databricks-dlt = "^0.2.1"
+confluent-kafka = "^2.5.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+main = "kafka_topic_dr.main:main"

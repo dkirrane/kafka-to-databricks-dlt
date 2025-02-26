@@ -1,0 +1,164 @@
+# Ref https://docs.databricks.com/en/dev-tools/bundles/ci-cd-bundles.html
+name: "DAB deploy"
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        type: choice
+        description: "Choose the environment:"
+        required: true
+        options:
+          - default
+          - dev
+          - prod
+        default: "default"
+      environment:
+        description: Azure Subscription containing the Databricks workspace
+        type: environment
+        required: true
+        default: "ccaas-dev-dev_labs"
+
+run-name: DAB build & deploy run ${{ inputs.dev }} - @${{ github.actor }}
+
+concurrency: "dab"
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./kafka_topic_dr_pipeline
+
+jobs:
+  Deploy:
+    name: "Deploy bundle"
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      ########
+      # BUILD
+      ########
+      # - name: Set up Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: '3.10'
+      # cache: 'poetry'
+
+      # - name: Install Poetry
+      #   uses: snok/install-poetry@v1
+
+      # - name: Load cached venv
+      #   id: cached-pip-wheels
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.cache
+      #     key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      # - name: Install dependencies
+      #   if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      #   run: poetry install --no-interaction --no-root
+
+      # - name: Install library
+      #   run: poetry install --no-interaction
+
+      # - name: Build project
+      #   run: poetry build
+
+      ########
+      # DEPLOY
+      ########
+      - name: Azure Login
+        uses: Azure/login@v2
+        with:
+          creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
+      - name: Azure Subscription
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az account show --query name
+
+      - name: Create Azure Databricks configuration profile (~/.databrickscfg)
+        run: |
+          DBW_URL=$( az databricks workspace show --name databricks-kafka-dr-poc-dbw --resource-group databricks-kafka-dr-poc-rg --query 'workspaceUrl' -o tsv )
+
+          CONFIG_FILE="$HOME/.databrickscfg"
+          if [ -f "$CONFIG_FILE" ]; then
+              echo "$CONFIG_FILE already exists. Deleting it..."
+              rm "$CONFIG_FILE"
+          fi
+
+          cat <<EOL > "$CONFIG_FILE"
+          [DEFAULT]
+          host = ${DBW_URL}
+          auth_type = azure-cli
+          EOL
+
+      - name: Show Azure Databricks configuration profile (~/.databrickscfg)
+        run: cat "$HOME/.databrickscfg"
+
+      - uses: databricks/setup-cli@main
+        with:
+          version: 0.228.0
+
+      - run: databricks bundle validate
+        env:
+          DATABRICKS_BUNDLE_ENV: ${{ inputs.env }}
+
+      - run: databricks bundle deploy
+        env:
+          DATABRICKS_BUNDLE_ENV: ${{ inputs.env }}
+
+  # Run:
+  #   name: "Run bundle"
+  #   runs-on: ubuntu-latest
+
+  #   environment: ${{ inputs.environment }}
+
+  #   needs:
+  #     - deploy
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Azure Login
+  #       uses: Azure/login@v2
+  #       with:
+  #         creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
+  #     - name: Azure Subscription
+  #       uses: azure/CLI@v2
+  #       with:
+  #         inlineScript: |
+  #           az account show --query name
+
+  #     - name: Create Azure Databricks configuration profile (~/.databrickscfg)
+  #       run: |
+  #           DBW_URL=$( az databricks workspace show --name databricks-kafka-dr-poc-dbw --resource-group databricks-kafka-dr-poc-rg --query 'workspaceUrl' -o tsv )
+
+  #           CONFIG_FILE="$HOME/.databrickscfg"
+  #           if [ -f "$CONFIG_FILE" ]; then
+  #               echo "$CONFIG_FILE already exists. Deleting it..."
+  #               rm "$CONFIG_FILE"
+  #           fi
+
+  #           cat <<EOL > "$CONFIG_FILE"
+  #           [DEFAULT]
+  #           host = ${DBW_URL}
+  #           auth_type = azure-cli
+  #           EOL
+
+  #     - name: Show Azure Databricks configuration profile (~/.databrickscfg)
+  #       run: cat "$HOME/.databrickscfg"
+
+  #     - uses: databricks/setup-cli@main
+  #       with:
+  #         version: 0.228.0
+
+  #     - run: databricks bundle run kafka_dr_pipeline
+  #       # env:
+  #       #   DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+  #       #   DATABRICKS_BUNDLE_ENV: ${{ inputs.env }}

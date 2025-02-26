@@ -1,0 +1,26 @@
+bundle:
+  name: dlt_kafka_topics
+
+
+resources:
+  pipelines:
+    dlt_kafka_topics:
+      name: DLT Pipeline for Kafka Topics
+      target: dlt_kafka_topics
+      development: true
+      channel: CURRENT
+      continuous: true
+      libraries:
+        - whl: dist/*.whl
+      # libraries:
+      #   - file:
+      #       path: dlt_pipeline.py
+
+# targets:
+#   dev:
+#     default: true
+#     workspace:
+#       host: https://your-dev-workspace.cloud.databricks.com
+#   prod:
+#     workspace:
+#       host: https://your-prod-workspace.cloud.databricks.com

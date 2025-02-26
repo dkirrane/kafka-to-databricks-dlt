@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "kafka-dr-pipeline-dab"
+version = "0.0.1"
+description = ""
+authors = ["dkirrane <1280116+dkirrane@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+main = "kafka_dr_pipeline.main:main"
