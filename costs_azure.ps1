@@ -47,7 +47,7 @@ function Connect-AzureIfNeeded {
 }
 
 Write-Output ""
-Connect-AzureIfNeeded -SubscriptionName "ccaas-dev-dev_labs"
+Connect-AzureIfNeeded -SubscriptionName "my-dev"
 
 # Set the time range for cost analysis (last 30 days)
 $startDate = (Get-Date).AddDays(-30).ToString("yyyy-MM-dd")
