@@ -1,7 +1,10 @@
-# Kafka Disaster Recovery PoC using Databricks Delta Live Tables
+# Overview
 
-- `terraform` folder contains all the Terrafomr needed to provison Azure, Aiven & Databricks infrastructure.
-- `kafka_topic_dr_pipeline` is the Databricks DAB - py-spark to read a Kafka Topic (multi-schema topic using Avro) and output it to a Datadricks Delta Live Table.
+This repo provides a solution to integrate **Kafka** Topics with Azure **Databricks Delta Live Tables (DLT)**.
+The py-spark job reads a Kafka Topic, gets the required Avro schema from Kafka Schema Registry, and deserialise the records to a Databricks Delta Live Table.
+
+- `terraform` folder contains all the Terraform needed to provison Azure, Aiven & Databricks infrastructure.
+- `kafka_topic_dr_pipeline` is the Databricks DAB (py-spark).
 - `aiven_kafka` contains Python scripts to consume/produce to/from the Aiven Kafka topic using Avro for message schema & Faker for the producer.
 - `scripts` folder contains scripts for working with Azure Datbricks and deploying the Databricks DAB bundle. 
 
