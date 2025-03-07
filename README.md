@@ -2,7 +2,7 @@
 
 This repo provides a solution to integrate **Kafka** Topics with Azure **Databricks Delta Live Tables (DLT)**.
 
-> The _py-spark_ job reads a _Kafka Topic_, gets the required _Avro_ schema from _Kafka Schema Registry_, and deserialise the records to a _Databricks Delta Live Table (DLT)_.
+> The _py-spark_ job reads a multi-schema _Kafka Topic_, gets the required _Avro_ schema from _Kafka Schema Registry_, and deserialises the records to a _Databricks Delta Live Table (DLT)_.
 
 - `terraform` folder contains all the Terraform needed to provison Azure, Aiven & Databricks infrastructure.
 - `kafka_topic_dr_pipeline` is the Databricks DAB (py-spark).
