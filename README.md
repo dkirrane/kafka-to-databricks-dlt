@@ -18,14 +18,14 @@ Run the `Terraform Apply` action to provision all the required Azure, Aiven & Da
 
 #### Step 2: Kafka Producer
 
-Run the `Kafka Producer` action to write some records to the PoC `user-actions` topic.
+Run the `Kafka Producer` action to write some records to the a `user-actions` topic.
 This is a multi-schema topic, so records have different Avro schemas.
 
 [![Kafka Producer](https://github.com/dkirrane/kafka_topic_dr/actions/workflows/kafka-producer.yml/badge.svg)](https://github.com/dkirrane/kafka_topic_dr/actions/workflows/kafka-producer.yml)
 
 #### Step 3: Databricks Asset Bundle (DAB)
 
-Run the `DAB deploy` action to deploy a Databricks Asset Bundle (DAB) that contains a Delta Live Table (DLT) notebook that streams the PoC `user-actions` topic to Databricks.
+Run the `DAB deploy` action to deploy a Databricks Asset Bundle (DAB) that contains a Delta Live Table (DLT) notebook that streams the `user-actions` topic to Databricks.
 
 [![DAB deploy](https://github.com/dkirrane/kafka_topic_dr/actions/workflows/dab-deploy.yml/badge.svg)](https://github.com/dkirrane/kafka_topic_dr/actions/workflows/dab-deploy.yml)
 
