@@ -1,6 +1,6 @@
 # Overview
 
-This repo provides a solution to integrate **Kafka** Topics with Azure **Databricks Delta Live Tables (DLT)**.
+This repo provides a solution to stream records from a **Kafka** Topic to an Azure **Databricks Delta Live Tables (DLT)**.
 
 > The _py-spark_ job reads a multi-schema _Kafka Topic_, gets the required _Avro_ schema from _Kafka Schema Registry_, and deserialises the records to a _Databricks Delta Live Table (DLT)_.
 
